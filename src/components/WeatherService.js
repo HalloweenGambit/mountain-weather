@@ -3,72 +3,58 @@ import React from 'react'
 import { useState } from "react"
 
 function WeatherService() {
-  const [weather, setWeather] = useState({});
-  const [location, setLocation] = useState("Beaver Creek");
-  const [photos, setPhotos] = useState([]);
-
-  const [coordinates, setCoordinates] = useState({
-    lon: '',
-    lat: ''
-  })
-  
-
   const API_KEY = '247537e1b87fbdafa8d273c88d41b8ad'
 
-  const REACT_APP_API_URL = 'https://api.openweathermap.org/data/2.5'
-  const REACT_APP_ICON_URL = 'https://openweathermap.org/img/w'
+  const [location, setLocation] = useState("Beaver Creek");
+  const [coordinates, setCoordinates] = useState({lat: '39.7092', lon: '-84.0633'})
+  const [weather, setWeather] = useState({temp: 0,
+                                          feelsLike: 0,
+                                          isRaining: false,
+                                          isSnowing: false,
+                                          wind: 0,
+                                          gust: 0,
+                                          humidity: 0,});
+  const [hourlyWeather, setHourlyWeather] = useState({});
+  const [photos, setPhotos] = useState([]);
+  
 
-  const getBasicWeatherData = async() => {
+  //api vs https:// = return html vs json
+  //use name to extract coordinates > use coordinates to extract hourly data information
+  const getWeatherData = async() => {
+    let lon;
+    let lat;
+
     try {
-      const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=
-                                    ${location}&appid=247537e1b87fbdafa8d273c88d41b8ad`);
-
-                                    
-      const data = await response.json()
+      const initialResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=
+                                          ${location}&appid=${API_KEY}`);
+      const basicData = await initialResponse.json()
       
-      setCoordinates({lon: data.coord.lon,
-                      lat: data.coord.lat})
-
-      console.log(coordinates)
-    }
-    catch (e) {
-      console.log(e)
-    }
-  }
-
-  const getFullWeatherData = async() => {
-    getBasicWeatherData()
-
-    try {
+      
+      lon = basicData.coord.lon
+      lat = basicData.coord.lat
+      console.log(lat)
+      console.log(lon)
+                                
       //api. => html response
-      const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=45.2879&lon=-122.5356&appid=247537e1b87fbdafa8d273c88d41b8ad`);
+      const SecondaryResponse = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
+      const fullWeatherData = await SecondaryResponse.json()
       
-      console.log(response)
-      const data = await response.json()
-      // const data = await response.json()
-      
-      
-      
+      console.log(fullWeatherData)
     }
     catch (e) {
       console.log(e)
     }
   }
-
 
 
   return (
     <div>
-      <button onClick={getFullWeatherData}>Click me for basic weather</button>
+      <button onClick={getWeatherData}>Click me for basic weather</button>
     </div>
   )
 }
 
 export default WeatherService
 
-
-
-
-// https://api.openweathermap.org/data/2.5/weather?q=London&appid=247537e1b87fbdafa8d273c88d41b8ad
-
-
+// const REACT_APP_API_URL = 'https://api.openweathermap.org/data/2.5'
+// const REACT_APP_ICON_URL = 'https://openweathermap.org/img/w'
