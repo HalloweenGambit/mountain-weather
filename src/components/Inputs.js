@@ -1,5 +1,6 @@
 import React from 'react'
 import { UilSearch, UilLocationPoint } from '@iconscout/react-unicons'
+
 export default function Inputs() {
   return (
 	<div className='flex flex-row justify-center my-6'>
@@ -8,7 +9,7 @@ export default function Inputs() {
 				placeholder="Mountain Name..."
 				className="text-xl font-light p-2 w-full shadow-xl focus:outline-none capitalize" 
 				/>
-			<UilSearch className="text-white transition ease-out hover:scale-125"/>
+			<UilSearch className="text-white transition ease-out hover:scale-125" location="Beaver Creek"/>
 			<UilLocationPoint className="text-white transition ease-out hover:scale-125"/>
 		</div>
 		<div className='flex flex-row w-1/4 items-center justify-center'>

@@ -2,7 +2,7 @@ import React from 'react'
 
 function TimeAndLocation() {
   return (
-	<div>Time&Location</div>
+	<div>Time and Location</div>
   )
 }
 
