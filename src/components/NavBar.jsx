@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function TopButtons() {
+export default function NavBar(props) {
 	const quickLocations = [
 		{id:1, 
 		name:'Beaver Creek'
@@ -23,6 +23,7 @@ export default function TopButtons() {
 		<div className='flex items-center justify-around my-6'>
 			{quickLocations.map((location) => (
 			<button 
+				onClick={() => props.changeLocation(location.name)}
 				key={location.id}
 				className='text-white text-lg font-medium'>
 					{location.name}

@@ -5,15 +5,16 @@ import { useState } from "react"
 function WeatherService() {
   const API_KEY = '247537e1b87fbdafa8d273c88d41b8ad'
 
+  //modified by input
   const [location, setLocation] = useState("Beaver Creek");
+
+  //modified by api
   const [coordinates, setCoordinates] = useState({lat: '39.7092', lon: '-84.0633'})
-  const [weather, setWeather] = useState({temp: 0,
-                                          feelsLike: 0,
-                                          isRaining: false,
-                                          isSnowing: false,
-                                          wind: 0,
-                                          gust: 0,
-                                          humidity: 0,});
+  const [temp, setTemp] = useState(0);
+  const [feelsLike, setFeelsLike] = useState(0);
+  const [wind, setWind] = useState({});
+  const [humidity, setHumidity] = useState(0);
+  
   const [hourlyWeather, setHourlyWeather] = useState({});
   const [photos, setPhotos] = useState([]);
   
@@ -28,12 +29,16 @@ function WeatherService() {
       const initialResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=
                                           ${location}&appid=${API_KEY}`);
       const basicData = await initialResponse.json()
-      
-      
       lon = basicData.coord.lon
       lat = basicData.coord.lat
-      console.log(lat)
-      console.log(lon)
+
+      console.log(basicData)
+      //set coordinates, Name, feelsLike, humidity, wind, Gust, sunRise, sunSet
+      setCoordinates(prevData => basicData.coord)
+      setTemp(prevData => basicData.main.temp)
+      setFeelsLike(prevData => basicData.main.feels_like)
+      setWind(prevData => basicData.wind)
+      setHumidity(prevData => basicData.main.humidity)
                                 
       //api. => html response
       const SecondaryResponse = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
@@ -47,9 +52,20 @@ function WeatherService() {
   }
 
 
+  const checkStates = () => {
+    console.log(location)
+    console.log(coordinates)
+    console.log(temp)
+    console.log(feelsLike)
+    console.log(wind)
+    console.log(humidity)
+  }
+
+
   return (
     <div>
       <button onClick={getWeatherData}>Click me for basic weather</button>
+      <button onClick={checkStates}>Click me to see the current weather states</button>
     </div>
   )
 }
